@@ -49,4 +49,18 @@ class DealControllerTest {
                 dealRequestDto.timestamp(),
                 dealRequestDto.amount());
     }
+
+    @Test
+    void givenValidRequest_whenSave_thenReturnCreatedResponse() {
+        given(dealService.save(dealRequestDto)).willReturn(dealResponseDto);
+
+        ResponseEntity<DealResponseDTO> actual = underTest.save(dealRequestDto);
+
+        assertThat(actual).isNotNull();
+        assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(actual.getBody()).isEqualTo(dealResponseDto);
+        verify(dealService).save(dealRequestDto);
+    }
+
+
 }
