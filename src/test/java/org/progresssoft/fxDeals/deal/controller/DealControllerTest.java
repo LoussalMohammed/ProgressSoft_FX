@@ -62,5 +62,15 @@ class DealControllerTest {
         verify(dealService).save(dealRequestDto);
     }
 
+    @Test
+    void givenDuplicateDealId_whenSave_thenThrowDuplicateDealIdException() {
+        given(dealService.save(any(DealCreateDTO.class)))
+                .willThrow(new DuplicateDealIdException("Deal id already exists"));
 
+        assertThatExceptionOfType(DuplicateDealIdException.class)
+                .isThrownBy(() -> underTest.save(dealRequestDto))
+                .withMessage("Deal id already exists");
+
+        verify(dealService).save(dealRequestDto);
+    }
 }
