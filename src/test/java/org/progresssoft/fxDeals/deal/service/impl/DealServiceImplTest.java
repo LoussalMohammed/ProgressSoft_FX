@@ -57,5 +57,22 @@ class DealServiceImplTest {
                 dealRequestDto.amount());
     }
 
+    @Test
+    void givenValidRequest_whenSave_thenReturnCreatedDeal() {
+        given(dealMapper.toEntity(dealRequestDto)).willReturn(deal);
+        given(dealRepository.save(any(Deal.class))).willReturn(deal);
+        given(dealMapper.toResponseEntity(deal))
+                .willReturn(new DealResponseDTO(dealRequestDto.id(),
+                        dealRequestDto.fromCurrency(),
+                        dealRequestDto.toCurrency(),
+                        dealRequestDto.timestamp(),
+                        dealRequestDto.amount()));
+
+        DealResponseDTO actual = underTest.save(dealRequestDto);
+
+        assertThat(actual).isNotNull();
+        assertThat(actual.id()).isEqualTo(deal.getId());
+        verify(dealRepository).save(any(Deal.class));
+    }
 
 }
