@@ -29,7 +29,6 @@ public class DealServiceImpl implements DealService {
         dealValidateService.SaveValidateDuplicated(dto.id());
 
         Deal savedDeal = dealRepository.save(dealMapper.toEntity(dto));
-        log.info("Deal saved successfully with ID: {}", savedDeal.getId());
 
         return dealMapper.toResponseEntity(savedDeal);
     }
